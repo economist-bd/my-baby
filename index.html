@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>রঙিন দুনিয়া — শিশুদের রঙিন শেখার জগৎ</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body data-active="index">
+
+<header id="site-header" class="site-header"></header>
+
+<section class="hero">
+  <div class="blob-decor" style="width:340px;height:340px;background:var(--sunny);top:-120px;right:-100px;"></div>
+  <div class="blob-decor" style="width:220px;height:220px;background:var(--sky);bottom:-60px;left:-60px;opacity:.35;"></div>
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">🌟 শেখো, খেলো, আঁকো — সব একসাথে</div>
+      <h1>স্বাগতম <span class="accent">রঙিন দুনিয়া</span>য়!<br>শিশুদের গল্প, বিজ্ঞান আর ছড়ার ঘর 🏡</h1>
+      <p>প্রতিদিন নতুন গল্প, মজার বিজ্ঞান, সুরেলা ছড়া, রংতুলির আঁকিবুঁকি আর অনেক ভিডিও — সবকিছু একসাথে খুঁজে পাও একটাই জায়গায়।</p>
+      <div class="hero-actions">
+        <a href="pages/stories.html" class="btn btn-primary">📖 গল্প পড়া শুরু করি</a>
+        <a href="pages/videos.html" class="btn btn-ghost">🎬 ভিডিও দেখি</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="200" cy="200" r="150" fill="#FFF3D6"/>
+        <circle cx="130" cy="150" r="55" fill="#FFC93C" stroke="#2D2A4A" stroke-width="5"/>
+        <path d="M90 110 L70 70 L120 95 Z" fill="#FF6F59" stroke="#2D2A4A" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M170 110 L190 70 L140 95 Z" fill="#FF6F59" stroke="#2D2A4A" stroke-width="5" stroke-linejoin="round"/>
+        <circle cx="112" cy="150" r="9" fill="#fff" stroke="#2D2A4A" stroke-width="4"/>
+        <circle cx="148" cy="150" r="9" fill="#fff" stroke="#2D2A4A" stroke-width="4"/>
+        <circle cx="112" cy="150" r="3.5" fill="#2D2A4A"/>
+        <circle cx="148" cy="150" r="3.5" fill="#2D2A4A"/>
+        <path d="M118 168 Q130 178 142 168" stroke="#2D2A4A" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <rect x="230" y="120" width="110" height="90" rx="14" fill="#4EA8DE" stroke="#2D2A4A" stroke-width="5"/>
+        <path d="M255 145 h60 M255 165 h45 M255 185 h55" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="250" cy="290" r="46" fill="#6BCB77" stroke="#2D2A4A" stroke-width="5"/>
+        <path d="M232 288 l13 13 24 -26" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="100" cy="290" r="36" fill="#FF6F59" stroke="#2D2A4A" stroke-width="5"/>
+        <path d="M85 290 h30 M100 275 v30" stroke="#fff" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="categories">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>🧭 তোমার পছন্দের বিভাগ বেছে নাও</h2>
+        <p>দশটি রঙিন ঘর — প্রতিটাতেই লুকিয়ে আছে নতুন মজা</p>
+      </div>
+    </div>
+    <div class="grid grid-4" id="catGrid"></div>
+  </div>
+</section>
+
+<section class="section alt">
+  <div class="container">
+    <div class="section-head">
+      <div>
+        <h2>✨ নতুন প্রকাশিত লেখা</h2>
+        <p>এই সপ্তাহের সেরা কিছু গল্প ও লেখা</p>
+      </div>
+      <a href="pages/stories.html" class="btn btn-secondary btn-sm">সব দেখো ➜</a>
+    </div>
+    <div class="grid grid-3" id="featuredGrid"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="callout">
+      <div>
+        <h3>👨‍👩‍👧‍👦 অভিভাবকদের জন্য</h3>
+        <p>আপনার সন্তানের জন্য নতুন পোস্ট যোগ করতে চান? আমাদের অ্যাডমিন প্যানেল থেকে সহজেই লেখা, ছবি, ভিডিও ও পিডিএফ যোগ করুন।</p>
+      </div>
+      <a href="admin.html" class="btn btn-secondary">⚙️ অ্যাডমিন প্যানেলে যাও</a>
+    </div>
+  </div>
+</section>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script type="module" src="assets/js/store.js"></script>
+<script type="module" src="assets/js/main.js"></script>
+<script type="module">
+async function boot(){
+  const pages = (await Store.getPages()).filter(p=>!p.hidden);
+  const catGrid = document.getElementById("catGrid");
+  catGrid.innerHTML = pages.map(p=>`
+    <a href="pages/${p.slug}.html" class="cat-card">
+      <div class="icon ${p.color}">${p.icon}</div>
+      <h3>${p.title}</h3>
+      <p>${p.desc}</p>
+      <span class="go">এখানে যাও ➜</span>
+    </a>`).join('');
+
+  const posts = (await Store.getPosts()).filter(p=>p.status==="published").slice(0,6);
+  document.getElementById("featuredGrid").innerHTML = posts.slice(0,3).map(p=>postCardHtml(p, "")).join('') || `<p class="empty-note">এখনো কোনো লেখা যোগ হয়নি।</p>`;
+}
+boot();
+</script>
+</body>
+</html>

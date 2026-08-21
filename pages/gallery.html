@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ছবির অ্যালবাম — রঙিন দুনিয়া</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+<style>
+  .lightbox{position:fixed; inset:0; background:rgba(45,42,74,.9); display:none; align-items:center; justify-content:center; z-index:999; padding:30px;}
+  .lightbox.open{display:flex;}
+  .lightbox img{max-width:90vw; max-height:85vh; border-radius:20px; border:4px solid #fff;}
+  .lightbox-close{position:absolute; top:24px; left:24px; background:#fff; border:none; width:44px; height:44px; border-radius:50%; font-weight:800; font-size:1.2rem;}
+  .gallery-tile{cursor:pointer; border:3px solid var(--plum); border-radius:var(--radius-md); overflow:hidden; aspect-ratio:1/1; box-shadow:var(--shadow-pop);}
+  .gallery-tile img{width:100%; height:100%; object-fit:cover;}
+</style>
+</head>
+<body data-active="gallery">
+
+<header id="site-header" class="site-header"></header>
+
+<section class="page-hero" style="background:var(--cream-2);">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">হোম</a> <span>/</span> <span>ছবির অ্যালবাম</span></div>
+    <div class="icon-badge bg-sunny">🖼️</div>
+    <h1>ছবির অ্যালবাম</h1>
+    <p style="max-width:52ch; margin:0 auto; color:var(--plum-70);">রঙিন সব ছবি আর আঁকা — ক্লিক করে বড় করে দেখো</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid-4" id="imgGrid"></div>
+  </div>
+</section>
+
+<div class="lightbox" id="lightbox">
+  <button class="lightbox-close" id="lbClose">✕</button>
+  <img id="lbImg" src="" alt="">
+</div>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script type="module" src="../assets/js/store.js"></script>
+<script type="module" src="../assets/js/main.js"></script>
+<script type="module">
+async function boot(){
+  const media = (await Store.getMedia()).filter(m=>m.type==="image");
+  const grid = document.getElementById("imgGrid");
+  grid.innerHTML = media.map(m=>`<div class="gallery-tile" data-src="${m.src}"><img src="${m.src}" alt="${m.name}"></div>`).join('')
+    || `<p class="empty-note">এখনো কোনো ছবি যোগ হয়নি। অ্যাডমিন প্যানেলের "মিডিয়া লাইব্রেরি" থেকে ছবি আপলোড করো!</p>`;
+
+  grid.querySelectorAll(".gallery-tile").forEach(tile=>{
+    tile.addEventListener("click", ()=>{
+      document.getElementById("lbImg").src = tile.dataset.src;
+      document.getElementById("lightbox").classList.add("open");
+    });
+  });
+  document.getElementById("lbClose").addEventListener("click", ()=> document.getElementById("lightbox").classList.remove("open"));
+  document.getElementById("lightbox").addEventListener("click", (e)=>{ if(e.target.id==="lightbox") e.currentTarget.classList.remove("open"); });
+}
+boot();
+</script>
+</body>
+</html>

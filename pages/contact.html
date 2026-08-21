@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>যোগাযোগ — রঙিন দুনিয়া</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-active="contact">
+
+<header id="site-header" class="site-header"></header>
+
+<section class="page-hero" style="background:var(--cream-2);">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">হোম</a> <span>/</span> <span>যোগাযোগ</span></div>
+    <div class="icon-badge bg-coral" style="color:#fff;">✉️</div>
+    <h1>যোগাযোগ করো</h1>
+    <p style="max-width:52ch; margin:0 auto; color:var(--plum-70);">প্রশ্ন, মতামত বা নতুন গল্পের আইডিয়া থাকলে আমাদের জানাও</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container" style="max-width:640px;">
+    <form class="comment-form" id="contactForm">
+      <div>
+        <label style="font-weight:700; display:block; margin-bottom:6px;">তোমার নাম</label>
+        <input type="text" required placeholder="যেমন: আরিয়ান" name="name">
+      </div>
+      <div>
+        <label style="font-weight:700; display:block; margin-bottom:6px;">ইমেইল</label>
+        <input type="email" required placeholder="you@example.com" name="email">
+      </div>
+      <div>
+        <label style="font-weight:700; display:block; margin-bottom:6px;">তোমার বার্তা</label>
+        <textarea required placeholder="এখানে লেখো..." name="message" style="min-height:140px;"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">📩 বার্তা পাঠাও</button>
+    </form>
+    <div class="grid grid-3" style="margin-top:30px;">
+      <div class="cat-card"><div class="icon bg-sky" style="color:#fff;">📍</div><h3>ঠিকানা</h3><p>কিশোরগঞ্জ, ঢাকা বিভাগ, বাংলাদেশ</p></div>
+      <div class="cat-card"><div class="icon bg-grass" style="color:#fff;">📞</div><h3>ফোন</h3><p>+৮৮০ ১XXX-XXXXXX</p></div>
+      <div class="cat-card"><div class="icon bg-sunny">📧</div><h3>ইমেইল</h3><p>hello@rongindunia.com</p></div>
+    </div>
+  </div>
+</section>
+
+<footer id="site-footer" class="site-footer"></footer>
+<script type="module" src="../assets/js/store.js"></script>
+<script type="module" src="../assets/js/main.js"></script>
+<script type="module">
+document.getElementById("contactForm").addEventListener("submit",(e)=>{
+  e.preventDefault();
+  toast("✅ ধন্যবাদ! তোমার বার্তা পাঠানো হয়েছে।");
+  e.target.reset();
+});
+</script>
+</body>
+</html>

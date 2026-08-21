@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>লেখাটি পড়ছো — রঙিন দুনিয়া</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-active="post">
+
+<header id="site-header" class="site-header"></header>
+
+<article id="postRoot">
+  <div class="post-header">
+    <div class="breadcrumb no-print"><a href="../index.html">হোম</a> <span>/</span> <span id="crumbCat">বিভাগ</span></div>
+    <div class="pill" id="postCatPill" style="margin-bottom:14px; display:inline-block;">বিভাগ</div>
+    <h1 id="postTitle">লেখাটি লোড হচ্ছে…</h1>
+    <div class="breadcrumb" style="justify-content:center;">
+      <span id="postAuthor">লেখক</span> <span>·</span> <span id="postDate">তারিখ</span>
+    </div>
+  </div>
+
+  <div class="post-cover no-print" id="postCoverWrap" style="display:none;">
+    <img id="postCover" src="" alt="">
+  </div>
+
+  <div class="post-body" id="postBody"></div>
+
+  <div class="reaction-bar no-print">
+    <div class="rb-group">
+      <button class="rb-btn" id="likeBtn">👍 <span id="likeCount">0</span> পছন্দ</button>
+      <button class="rb-btn" id="commentJump">💬 <span id="commentCount">0</span> মন্তব্য</button>
+    </div>
+    <div class="rb-group">
+      <button class="rb-btn" id="shareFb">📘 শেয়ার</button>
+      <button class="rb-btn" id="shareCopy">🔗 লিংক কপি</button>
+      <button class="rb-btn" id="printBtn">🖨️ প্রিন্ট</button>
+    </div>
+  </div>
+
+  <div class="comments-wrap no-print" id="commentSection">
+    <h3>💬 মন্তব্যসমূহ (<span id="commentCount2">0</span>)</h3>
+    <form class="comment-form" id="commentForm">
+      <input type="text" id="cName" placeholder="তোমার নাম" required>
+      <textarea id="cText" placeholder="তোমার মন্তব্য লেখো..." required></textarea>
+      <button type="submit" class="btn btn-primary btn-sm" style="align-self:flex-start;">মন্তব্য পাঠাও</button>
+    </form>
+    <div id="commentList"></div>
+  </div>
+</article>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script type="module" src="../assets/js/store.js"></script>
+<script type="module" src="../assets/js/main.js"></script>
+<script type="module">
+const params = new URLSearchParams(location.search);
+const postId = params.get("id");
+
+async function renderComments(){
+  const comments = await Store.getComments(postId);
+  document.getElementById("commentCount").textContent = comments.length;
+  document.getElementById("commentCount2").textContent = comments.length;
+  const list = document.getElementById("commentList");
+  list.innerHTML = comments.map(c=>`
+    <div class="comment-item">
+      <div class="comment-avatar">${c.name.trim()[0]||'?'}</div>
+      <div>
+        <div class="comment-name">${c.name} <span class="comment-date">· ${timeAgo(c.date)}</span></div>
+        <div class="comment-text">${c.text}</div>
+      </div>
+    </div>`).join('') || `<p class="empty-note">এখনো কোনো মন্তব্য নেই। প্রথম মন্তব্যটি তুমিই করো!</p>`;
+}
+
+async function boot(){
+  if(!postId){ document.getElementById("postTitle").textContent = "লেখাটি খুঁজে পাওয়া যায়নি"; return; }
+  const post = await Store.getPost(postId);
+  if(!post){ document.getElementById("postTitle").textContent = "লেখাটি খুঁজে পাওয়া যায়নি"; return; }
+
+  document.title = post.title + " — রঙিন দুনিয়া";
+  document.getElementById("postTitle").textContent = post.title;
+  document.getElementById("postAuthor").textContent = post.author || "রঙিন দুনিয়া টিম";
+  document.getElementById("postDate").textContent = timeAgo(post.date);
+  document.getElementById("postCatPill").textContent = catIcon(post.category) + " " + post.category;
+  document.getElementById("crumbCat").textContent = post.category;
+  document.getElementById("postBody").innerHTML = post.body || `<p>${post.excerpt||''}</p>`;
+
+  if(post.cover){
+    document.getElementById("postCoverWrap").style.display = "block";
+    document.getElementById("postCover").src = post.cover;
+  }
+
+  const state = await Store.getLikeState(postId);
+  document.getElementById("likeCount").textContent = state.count;
+  if(state.liked) document.getElementById("likeBtn").classList.add("liked");
+
+  document.getElementById("likeBtn").addEventListener("click", async ()=>{
+    const res = await Store.toggleLike(postId);
+    document.getElementById("likeCount").textContent = res.count;
+    document.getElementById("likeBtn").classList.toggle("liked", res.liked);
+  });
+
+  document.getElementById("commentJump").addEventListener("click", ()=>{
+    document.getElementById("commentSection").scrollIntoView({behavior:"smooth"});
+  });
+
+  document.getElementById("shareFb").addEventListener("click", ()=>{
+    const url = encodeURIComponent(location.href);
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, "_blank", "width=600,height=500");
+  });
+
+  document.getElementById("shareCopy").addEventListener("click", async ()=>{
+    try{ await navigator.clipboard.writeText(location.href); toast("🔗 লিংক কপি হয়েছে!"); }
+    catch(e){ toast("লিংক কপি করা যায়নি, ম্যানুয়ালি কপি করো।"); }
+  });
+
+  document.getElementById("printBtn").addEventListener("click", ()=> window.print());
+
+  await renderComments();
+
+  document.getElementById("commentForm").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const name = document.getElementById("cName").value.trim();
+    const text = document.getElementById("cText").value.trim();
+    if(!name || !text) return;
+    await Store.addComment(postId, {name, text});
+    document.getElementById("commentForm").reset();
+    await renderComments();
+    toast("💬 তোমার মন্তব্য যোগ হয়েছে!");
+  });
+}
+boot();
+</script>
+</body>
+</html>

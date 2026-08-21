@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>খেলাধুলা — রঙিন দুনিয়া</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-active="games">
+
+<header id="site-header" class="site-header"></header>
+
+<section class="page-hero" style="background:var(--cream-2);">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">হোম</a> <span>/</span> <span>খেলাধুলা</span></div>
+    <div class="icon-badge bg-coral" style="color:#fff;">⚽</div>
+    <h1>খেলাধুলা</h1>
+    <p style="max-width:52ch; margin:0 auto; color:var(--plum-70);">খেলার মাঠের নানা মজা আর নিয়মকানুন</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid-3" id="postGrid"></div>
+  </div>
+</section>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script type="module" src="../assets/js/store.js"></script>
+<script type="module" src="../assets/js/main.js"></script>
+<script type="module">
+async function boot(){
+  const posts = (await Store.getPosts("games")).filter(p=>p.status==="published");
+  document.getElementById("postGrid").innerHTML = posts.map(p=>postCardHtml(p, "../")).join('') || `<p class="empty-note">এই বিভাগে এখনো কোনো লেখা যোগ হয়নি। অ্যাডমিন প্যানেল থেকে যোগ করো!</p>`;
+}
+boot();
+</script>
+</body>
+</html>

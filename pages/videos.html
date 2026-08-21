@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ভিডিও গ্যালারি — রঙিন দুনিয়া</title>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body data-active="videos">
+
+<header id="site-header" class="site-header"></header>
+
+<section class="page-hero" style="background:var(--cream-2);">
+  <div class="container">
+    <div class="breadcrumb"><a href="../index.html">হোম</a> <span>/</span> <span>ভিডিও গ্যালারি</span></div>
+    <div class="icon-badge bg-sky" style="color:#fff;">🎬</div>
+    <h1>ভিডিও গ্যালারি</h1>
+    <p style="max-width:52ch; margin:0 auto; color:var(--plum-70);">দেখার মতো সেরা সব ভিডিও — গল্প বলা থেকে শুরু করে ছোট্ট কার্টুন পর্যন্ত</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="grid grid-3" id="videoGrid"></div>
+  </div>
+</section>
+
+<footer id="site-footer" class="site-footer"></footer>
+
+<script type="module" src="../assets/js/store.js"></script>
+<script type="module" src="../assets/js/main.js"></script>
+<script type="module">
+async function boot(){
+  const media = (await Store.getMedia()).filter(m=>m.type==="video");
+  const grid = document.getElementById("videoGrid");
+  grid.innerHTML = media.map(m=>`
+    <div class="post-card">
+      <div class="thumb" style="height:200px;"><video src="${m.src}" controls style="width:100%; height:100%; object-fit:cover;"></video></div>
+      <div class="body">
+        <h3>${m.name}</h3>
+        <p>${timeAgo(m.date)} তারিখে যোগ করা হয়েছে</p>
+      </div>
+    </div>`).join('') || `<p class="empty-note">এখনো কোনো ভিডিও যোগ হয়নি। অ্যাডমিন প্যানেলের "মিডিয়া লাইব্রেরি" থেকে ভিডিও আপলোড করো!</p>`;
+}
+boot();
+</script>
+</body>
+</html>
